@@ -8,6 +8,7 @@ def load_data(filepath):
 def scale_data(df):
     """Melakukan scaling pada kolom numerik"""
     scaler = StandardScaler()
+    # Scaling kolom numerik yang relevan
     df[['Number of Affected Users', 'Incident Resolution Time (in Hours)']] = scaler.fit_transform(df[['Number of Affected Users', 'Incident Resolution Time (in Hours)']])
     return df
 
@@ -35,6 +36,9 @@ def preprocess_data(filepath):
     
     # 3. Melakukan encoding pada data kategorikal
     df = encode_data(df)
+    
+    # Menyimpan dataset yang sudah diproses ke dalam file CSV
+    df.to_csv('dataset/processed_dataset.csv', index=False)
     
     # Mengembalikan dataframe yang sudah diproses
     return df
