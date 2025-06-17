@@ -51,5 +51,6 @@ jobs:
           git commit -m "Automated preprocessing"
           git push
         else
-          echo "❌ File processed_dataset.csv not found. Skipping commit."
+          echo "File processed_dataset.csv not found. Skipping commit."
           exit 1
+        fi
