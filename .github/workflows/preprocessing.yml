@@ -27,7 +27,7 @@ jobs:
 
     - name: Run preprocessing script
       run: |
-        python preprocessing/automate_Nama-siswa.py  # Menjalankan script preprocessing
+        python preprocessing/automate_Putri-Nanda-Sari.py  # Menjalankan script preprocessing
 
     - name: Commit processed dataset to preprocessing folder
       run: |
