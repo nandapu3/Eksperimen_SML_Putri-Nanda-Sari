@@ -18,16 +18,25 @@ jobs:
     - name: Set up Python 3.12.7
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12.7'  # Menggunakan Python versi 3.12.7
+        python-version: '3.12.7'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas scikit-learn  # Menginstal dependensi untuk preprocessing
+        pip install pandas scikit-learn
+
+    - name: Detect latest CSV file in dataset folder
+      id: get_csv
+      run: |
+        LATEST_CSV=$(ls -t dataset/*.csv | head -n 1)
+        echo "Found latest CSV: $LATEST_CSV"
+        echo "csv_path=$LATEST_CSV" >> $GITHUB_OUTPUT
 
     - name: Run preprocessing script
       run: |
-        python preprocessing/automate_Putri-Nanda-Sari.py  # Menjalankan script preprocessing
+        python preprocessing/automate_Putri-Nanda-Sari.py \
+          --input "${{ steps.get_csv.outputs.csv_path }}" \
+          --output preprocessing/processed_dataset.csv
 
     - name: Commit processed dataset to repository
       env:
@@ -45,4 +54,3 @@ jobs:
           echo "❌ File processed_dataset.csv not found. Skipping commit."
           exit 1
         fi
-
