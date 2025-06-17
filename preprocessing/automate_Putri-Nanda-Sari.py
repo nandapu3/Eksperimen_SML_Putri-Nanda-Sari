@@ -38,7 +38,7 @@ def preprocess_data(filepath):
     df = encode_data(df)
     
     # Menyimpan dataset yang sudah diproses ke dalam file CSV
-    df.to_csv('processed_dataset.csv', index=False)
+    df.to_csv('preprocessing/processed_dataset.csv', index=False)
     
     # Mengembalikan dataframe yang sudah diproses
     return df
