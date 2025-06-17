@@ -5,15 +5,15 @@ on:
     branches:
       - main
     paths:
-      - 'dataset/*'  # Trigger jika ada perubahan di folder dataset
+      - 'dataset/*'
 
 jobs:
   preprocessing:
-    runs-on: ubuntu-latest  # Menjalankan di environment Ubuntu terbaru
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2  # Mengambil kode dari repositori
+      uses: actions/checkout@v2
 
     - name: Set up Python 3.12.7
       uses: actions/setup-python@v2
@@ -38,18 +38,13 @@ jobs:
           --input "${{ steps.get_csv.outputs.csv_path }}" \
           --output preprocessing/processed_dataset.csv
 
-    - name: Commit processed dataset to repository
+    - name: Commit and push processed dataset
       env:
         PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email 'actions@github.com'
-        if [ -f preprocessing/processed_dataset.csv ]; then
-          git add preprocessing/processed_dataset.csv
-          git add preprocessing/processed_dataset_encoders.json || true
-          git commit -m "Automated preprocessing"
-          git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
-        else
-          echo "❌ File processed_dataset.csv not found. Skipping commit."
-          exit 1
-        fi
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add preprocessing/processed_dataset.csv
+        git add preprocessing/processed_dataset_encoders.json || true
+        git commit -m "Automated preprocessing" || echo "Nothing to commit"
+        git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }} HEAD:main
