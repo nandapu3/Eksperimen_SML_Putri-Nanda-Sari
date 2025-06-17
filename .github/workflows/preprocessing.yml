@@ -42,15 +42,18 @@ jobs:
       run: ls -l preprocessing
 
     - name: Commit processed dataset to repository
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
         if [ -f preprocessing/processed_dataset.csv ]; then
           git add preprocessing/processed_dataset.csv
           git add preprocessing/processed_dataset_encoders.json || true
           git commit -m "Automated preprocessing"
-          git push
+          git push origin HEAD:${{ github.ref }}
         else
-          echo "File processed_dataset.csv not found. Skipping commit."
+          echo "❌ File processed_dataset.csv not found. Skipping commit."
           exit 1
         fi
