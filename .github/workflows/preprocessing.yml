@@ -7,6 +7,9 @@ on:
     paths:
       - 'dataset/*'
 
+permissions:
+  contents: write
+
 jobs:
   preprocessing:
     runs-on: ubuntu-latest
@@ -47,4 +50,9 @@ jobs:
         git add preprocessing/processed_dataset.csv
         git add preprocessing/processed_dataset_encoders.json || true
         git commit -m "Automated preprocessing" || echo "Nothing to commit"
-        git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }} HEAD:main
+    
+        # WAJIB: Pakai token kamu, bukan bot
+        git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}
+    
+        # Lakukan push
+        git push origin HEAD:main
