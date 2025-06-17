@@ -1,0 +1,50 @@
+{
+  "Attack Type": {
+    "DDoS": 0,
+    "Malware": 1,
+    "Man-in-the-Middle": 2,
+    "Phishing": 3,
+    "Ransomware": 4,
+    "SQL Injection": 5
+  },
+  "Country": {
+    "Australia": 0,
+    "Brazil": 1,
+    "China": 2,
+    "France": 3,
+    "Germany": 4,
+    "India": 5,
+    "Japan": 6,
+    "Russia": 7,
+    "UK": 8,
+    "USA": 9
+  },
+  "Target Industry": {
+    "Banking": 0,
+    "Education": 1,
+    "Government": 2,
+    "Healthcare": 3,
+    "IT": 4,
+    "Retail": 5,
+    "Telecommunications": 6
+  },
+  "Attack Source": {
+    "Hacker Group": 0,
+    "Insider": 1,
+    "Nation-state": 2,
+    "Unknown": 3
+  },
+  "Security Vulnerability Type": {
+    "Social Engineering": 0,
+    "Unpatched Software": 1,
+    "Weak Passwords": 2,
+    "Zero-day": 3
+  },
+  "Defense Mechanism Used": {
+    "AI-based Detection": 0,
+    "Antivirus": 1,
+    "Encryption": 2,
+    "Firewall": 3,
+    "VPN": 4
+  }
+}
