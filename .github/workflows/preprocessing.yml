@@ -29,12 +29,20 @@ jobs:
       run: |
         python preprocessing/automate_Nama-siswa.py  # Menjalankan script preprocessing
 
-    - name: Commit processed dataset
+    - name: Commit processed dataset to repository
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
-        git config --global user.name 'GitHub Actions'  # Menyiapkan identitas pengguna
-        git config --global user.email 'actions@github.com'  # Menyiapkan email pengguna
-        git add preprocessing/processed_dataset.csv  # Menambahkan file yang sudah diproses ke folder preprocessing
-        git commit -m "Automated preprocessing"  # Commit hasil preprocessing
-        
-        # Gunakan Personal Access Token (PAT) untuk autentikasi saat push ke remote GitHub
-        git push https://github-actions:${{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}}@github.com/nandapu3/Eksperimen_SML_Putri-Nanda-Sari.git
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        git remote set-url origin https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}
+        if [ -f preprocessing/processed_dataset.csv ]; then
+          git add preprocessing/processed_dataset.csv
+          git add preprocessing/processed_dataset_encoders.json || true
+          git commit -m "Automated preprocessing"
+          git push origin HEAD:${{ github.ref }}
+        else
+          echo "❌ File processed_dataset.csv not found. Skipping commit."
+          exit 1
+        fi
+
