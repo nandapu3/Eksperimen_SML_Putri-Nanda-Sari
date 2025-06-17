@@ -5,34 +5,51 @@ on:
     branches:
       - main
     paths:
-      - 'dataset/*'  
+      - 'dataset/*.csv'
 
 jobs:
   preprocessing:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2 
+      uses: actions/checkout@v2
 
-    - name: Set up Python 3.12.7
+    - name: Set up Python 3.12
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12.7'  
+        python-version: '3.12.7'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas scikit-learn  # Menginstal dependensi untuk preprocessing
+        pip install pandas scikit-learn
+
+    - name: Detect latest CSV file in dataset folder
+      id: get_csv
+      run: |
+        LATEST_CSV=$(ls -t dataset/*.csv | head -n 1)
+        echo "Found latest CSV: $LATEST_CSV"
+        echo "csv_path=$LATEST_CSV" >> $GITHUB_OUTPUT
 
     - name: Run preprocessing script
       run: |
-        python preprocessing/automate_Putri-Nanda-Sari.py  # Menjalankan script preprocessing
+        python preprocessing/automate_Putri-Nanda-Sari.py \
+          --input "${{ steps.get_csv.outputs.csv_path }}" \
+          --output preprocessing/processed_dataset.csv
 
-    - name: Commit processed dataset to preprocessing folder
+    - name: Check contents of preprocessing folder
+      run: ls -l preprocessing
+
+    - name: Commit processed dataset to repository
       run: |
-        git config --global user.name 'GitHub Actions'  # Menyiapkan identitas pengguna
-        git config --global user.email 'actions@github.com'  # Menyiapkan email pengguna
-        git add preprocessing/processed_dataset.csv  # Menambahkan file yang sudah diproses ke folder preprocessing
-        git commit -m "Automated preprocessing"  # Commit hasil preprocessing
-        git push  # Mengirim perubahan ke GitHub
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        if [ -f preprocessing/processed_dataset.csv ]; then
+          git add preprocessing/processed_dataset.csv
+          git add preprocessing/processed_dataset_encoders.json || true
+          git commit -m "Automated preprocessing"
+          git push
+        else
+          echo "❌ File processed_dataset.csv not found. Skipping commit."
+          exit 1
