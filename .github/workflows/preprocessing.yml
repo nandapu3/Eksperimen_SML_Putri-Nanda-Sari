@@ -39,7 +39,7 @@ jobs:
       run: |
         python preprocessing/automate_Putri-Nanda-Sari.py \
           --input "${{ steps.get_csv.outputs.csv_path }}" \
-          --output preprocessing/processed_dataset.csv
+          --output preprocessing/sleep_cycle_preprocessed.csv
 
     - name: Commit and push processed dataset
       env:
