@@ -23,7 +23,7 @@ def bin_columns(df: pd.DataFrame) -> pd.DataFrame:
         include_lowest=True,
     )
     if "Sleep Quality" in df.columns:
-        df["Sleep Quality Category"] = pd.cut(
+        df["Sleep Quality"] = pd.cut(
             df["Sleep Quality"], bins=[0, 4, 7, 10], labels=["Low", "Medium", "High"], include_lowest=True
         )
     return df
