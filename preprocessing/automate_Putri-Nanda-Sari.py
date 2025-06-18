@@ -61,8 +61,8 @@ def preprocess_data(input_path: str, output_path: str) -> pd.DataFrame:
     categorical_cols = [
         "Mood Score", "Stress Level", "Screen Time Before Bed (mins)"
     ]
-    if "Sleep Quality Category" in df.columns:
-        categorical_cols.append("Sleep Quality Category")
+    if "Sleep Quality" in df.columns:
+        categorical_cols.append("Sleep Quality")
 
     df, encoders = encode_categorical(df, categorical_cols)
 
