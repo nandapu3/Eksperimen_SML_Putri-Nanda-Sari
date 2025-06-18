@@ -22,10 +22,6 @@ def bin_columns(df: pd.DataFrame) -> pd.DataFrame:
         labels=["<30 menit", "30–60 menit", ">60 menit"],
         include_lowest=True,
     )
-    if "Sleep Quality" in df.columns:
-        df["Sleep Quality"] = pd.cut(
-            df["Sleep Quality"], bins=[0, 4, 7, 10], labels=["Low", "Medium", "High"], include_lowest=True
-        )
     return df
 
 def encode_categorical(df: pd.DataFrame, categorical_cols: list[str]) -> tuple[pd.DataFrame, dict[str, dict[str, int]]]:
@@ -61,9 +57,6 @@ def preprocess_data(input_path: str, output_path: str) -> pd.DataFrame:
     categorical_cols = [
         "Mood Score", "Stress Level", "Screen Time Before Bed (mins)"
     ]
-    if "Sleep Quality" in df.columns:
-        categorical_cols.append("Sleep Quality")
-
     df, encoders = encode_categorical(df, categorical_cols)
 
     numeric_cols = [
