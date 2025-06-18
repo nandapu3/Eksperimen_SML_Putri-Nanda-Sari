@@ -62,7 +62,7 @@ def preprocess_data(input_path: str, output_path: str) -> pd.DataFrame:
     numeric_cols = [
         "Age", "Sleep Start Time", "Sleep End Time",
         "Total Sleep Hours", "Screen Time Before Bed (mins)",
-        "Work Hours (hrs/day)", "Stress Level", "Mood Score"
+        "Work Hours (hrs/day)", "Mood Score", "Stress Level"
     ]
     df = scale_numeric(df, [col for col in numeric_cols if col in df.columns])
 
